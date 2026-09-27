@@ -1,0 +1,10 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({data})=>!data.draft)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+---
+<BaseLayout title="전체 글" description="LovingU Journal에 발행된 전체 글을 한곳에서 확인하세요.">
+  <section class="hero" style="padding:62px 0 42px"><div class="container"><div class="eyebrow">Archive</div><h1 style="font-size:clamp(2.5rem,6vw,4.5rem)">전체 글</h1><p>분류보다 먼저, 필요한 답을 빠르게 찾을 수 있도록 정리합니다.</p></div></section>
+  <section class="section"><div class="container"><div class="grid">{posts.map(post=><ArticleCard post={post}/>)}</div></div></section>
+</BaseLayout>
