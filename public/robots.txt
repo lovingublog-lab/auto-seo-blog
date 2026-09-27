@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lovingublog-lab.github.io/auto-seo-blog/sitemap.xml
+Sitemap: https://lifetechnote.com/sitemap.xml
