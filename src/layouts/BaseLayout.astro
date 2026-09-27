@@ -8,6 +8,7 @@ const {
   publishedTime,
   modifiedTime
 } = Astro.props;
+const base = import.meta.env.BASE_URL;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const siteName = 'LovingU Journal';
 const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
@@ -19,7 +20,7 @@ const jsonLd = article ? {
   publisher:{'@type':'Organization',name:siteName}
 } : {
   '@context':'https://schema.org','@type':'WebSite',
-  name:siteName,url:new URL(Astro.base || '/', Astro.site).href,
+  name:siteName,url:new URL(base, Astro.site).href,
   description
 };
 ---
@@ -46,15 +47,15 @@ const jsonLd = article ? {
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href={Astro.base || '/'}>
+      <a class="brand" href={base}>
         <span class="brand-mark">L</span>
         <span>LovingU Journal</span>
       </a>
       <nav class="nav" aria-label="주요 메뉴">
-        <a href={`${Astro.base}/`}>홈</a>
-        <a href={`${Astro.base}/articles/`}>전체 글</a>
-        <a href={`${Astro.base}/about/`}>소개</a>
-        <a class="nav-cta" href={`${Astro.base}/contact/`}>문의</a>
+        <a href={base}>홈</a>
+        <a href={`${base}articles/`}>전체 글</a>
+        <a href={`${base}about/`}>소개</a>
+        <a class="nav-cta" href={`${base}contact/`}>문의</a>
       </nav>
     </div>
   </header>
@@ -63,9 +64,9 @@ const jsonLd = article ? {
     <div class="container footer-inner">
       <div><strong>LovingU Journal</strong><br/>신뢰할 수 있는 정보와 실용적인 해설을 지향합니다.</div>
       <div class="footer-links">
-        <a href={`${Astro.base}/about/`}>소개</a>
-        <a href={`${Astro.base}/privacy/`}>개인정보처리방침</a>
-        <a href={`${Astro.base}/contact/`}>문의</a>
+        <a href={`${base}about/`}>소개</a>
+        <a href={`${base}privacy/`}>개인정보처리방침</a>
+        <a href={`${base}contact/`}>문의</a>
       </div>
       <div>© {new Date().getFullYear()} LovingU Journal</div>
     </div>
