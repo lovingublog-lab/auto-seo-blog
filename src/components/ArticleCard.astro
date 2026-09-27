@@ -1,0 +1,21 @@
+---
+const { post } = Astro.props;
+const { title, description, category, pubDate, tags } = post.data;
+const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(pubDate);
+---
+<article class="card">
+  <a href={`${Astro.base}/blog/${post.slug}/`} aria-label={title}>
+    <div class="card-media">
+      <div>
+        <small>{category}</small>
+        <div style="font-family:Georgia,serif;font-size:1.35rem;margin-top:4px">Insight · Guide · Review</div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-kicker">{category}</div>
+      <h3>{title}</h3>
+      <p>{description}</p>
+      <div class="card-meta"><span>{date}</span><span>{tags?.[0] || 'Insight'}</span></div>
+    </div>
+  </a>
+</article>
