@@ -5,7 +5,7 @@ pubDate: 2026-09-28
 category: "스마트폰 보안"
 tags: ["안드로이드 도난 방지", "휴대폰 분실", "내 기기 허브", "스마트폰 보안"]
 featured: true
-image: "/auto-seo-blog/images/android-theft-protection-2026.svg"
+image: "/images/android-theft-protection-2026.svg"
 imageAlt: "안드로이드 도난 방지 설정을 상징하는 스마트폰과 방패 일러스트"
 draft: false
 ---
