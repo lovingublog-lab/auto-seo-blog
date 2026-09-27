@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://lovingublog-lab.github.io/auto-seo-blog/sitemap-index.xml
