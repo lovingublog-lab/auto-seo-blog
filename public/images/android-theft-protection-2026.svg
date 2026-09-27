@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="t d">
+<title id="t">안드로이드 도난 방지 설정 가이드</title>
+<desc id="d">스마트폰 잠금과 위치 보호를 상징하는 방패와 휴대전화 일러스트</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#10233b"/>
+    <stop offset="0.55" stop-color="#153a65"/>
+    <stop offset="1" stop-color="#0f6f6a"/>
+  </linearGradient>
+  <linearGradient id="shield" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#e7f6f4"/>
+    <stop offset="1" stop-color="#8fd4cc"/>
+  </linearGradient>
+</defs>
+<rect width="1200" height="675" rx="36" fill="url(#bg)"/>
+<circle cx="980" cy="80" r="180" fill="#fff" opacity=".04"/>
+<circle cx="1070" cy="560" r="230" fill="#fff" opacity=".035"/>
+<g transform="translate(720 105)">
+  <rect x="95" y="0" width="245" height="465" rx="38" fill="#f8fbff"/>
+  <rect x="116" y="58" width="203" height="335" rx="20" fill="#e8eef5"/>
+  <rect x="180" y="25" width="75" height="9" rx="4.5" fill="#a9b6c5"/>
+  <circle cx="218" cy="428" r="13" fill="#c3ccd8"/>
+  <path d="M70 190 C70 125 118 90 170 72 C222 90 270 125 270 190 C270 294 215 350 170 374 C125 350 70 294 70 190Z" fill="url(#shield)" stroke="#fff" stroke-width="8"/>
+  <rect x="132" y="183" width="76" height="74" rx="12" fill="#153a65"/>
+  <path d="M147 183 v-23 c0-31 46-31 46 0 v23" fill="none" stroke="#153a65" stroke-width="14" stroke-linecap="round"/>
+  <circle cx="170" cy="217" r="9" fill="#fff"/>
+  <path d="M170 226 v17" stroke="#fff" stroke-width="7" stroke-linecap="round"/>
+</g>
+<g transform="translate(82 120)">
+  <text x="0" y="0" fill="#86d7cd" font-family="Arial, sans-serif" font-size="24" font-weight="700" letter-spacing="3">PRACTICAL SECURITY GUIDE</text>
+  <text x="0" y="92" fill="#fff" font-family="Arial, sans-serif" font-size="58" font-weight="800">안드로이드 도난 방지</text>
+  <text x="0" y="164" fill="#fff" font-family="Arial, sans-serif" font-size="58" font-weight="800">설정 전에 확인할 것</text>
+  <text x="0" y="230" fill="#cbd7e4" font-family="Arial, sans-serif" font-size="29">분실 전에 켜두면 도움이 되는 핵심 보호 기능 정리</text>
+  <rect x="0" y="292" width="365" height="54" rx="27" fill="#fff" opacity=".1"/>
+  <text x="25" y="328" fill="#fff" font-family="Arial, sans-serif" font-size="22" font-weight="700">LovingU Journal · 2026</text>
+</g>
+</svg>
