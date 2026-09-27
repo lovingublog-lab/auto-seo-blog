@@ -1,17 +1,23 @@
 ---
 const { post } = Astro.props;
-const { title, description, category, pubDate, tags } = post.data;
+const { title, description, category, pubDate, tags, image, imageAlt } = post.data;
 const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(pubDate);
 const base = import.meta.env.BASE_URL;
 ---
 <article class="card">
   <a href={`${base}blog/${post.slug}/`} aria-label={title}>
-    <div class="card-media">
-      <div>
-        <small>{category}</small>
-        <div style="font-family:Georgia,serif;font-size:1.35rem;margin-top:4px">Insight · Guide · Review</div>
+    {image ? (
+      <div class="card-media" style="padding:0;overflow:hidden">
+        <img src={image} alt={imageAlt || title} loading="lazy" width="1200" height="675" style="width:100%;height:100%;object-fit:cover" />
       </div>
-    </div>
+    ) : (
+      <div class="card-media">
+        <div>
+          <small>{category}</small>
+          <div style="font-family:Georgia,serif;font-size:1.35rem;margin-top:4px">Insight · Guide · Review</div>
+        </div>
+      </div>
+    )}
     <div class="card-body">
       <div class="card-kicker">{category}</div>
       <h3>{title}</h3>
