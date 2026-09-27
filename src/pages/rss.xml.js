@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 const esc = (value='') => String(value).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&apos;');
 
 export async function GET({ site }) {
-  const base = new URL('/auto-seo-blog/', site);
+  const base = new URL('/', site);
   const posts = (await getCollection('blog', ({data}) => !data.draft))
     .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
     .slice(0,30);
