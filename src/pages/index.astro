@@ -1,0 +1,43 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+const posts = (await getCollection('blog', ({data}) => !data.draft)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+const featured = posts.find(p=>p.data.featured) || posts[0];
+const latest = posts.slice(0,6);
+---
+<BaseLayout title="LovingU Journal" description="생활, 기술, 디지털 도구를 더 잘 활용하도록 돕는 깊이 있는 실용 정보 블로그입니다.">
+  <section class="hero">
+    <div class="container">
+      <div class="eyebrow">Independent Practical Journal</div>
+      <h1>복잡한 정보를<br/>명확한 판단으로.</h1>
+      <p>기술과 일상에서 바로 활용할 수 있는 정보만 선별해, 과장 없이 이해하기 쉽게 정리합니다.</p>
+      <div class="hero-meta">
+        <span class="pill">실용 가이드</span><span class="pill">기술 인사이트</span><span class="pill">비교·해설</span><span class="pill">검색 친화적 아카이브</span>
+      </div>
+    </div>
+  </section>
+
+  {featured && <section class="section">
+    <div class="container">
+      <div class="feature">
+        <div class="feature-copy">
+          <div class="eyebrow" style="color:#83d3cb">Featured Article</div>
+          <h2>{featured.data.title}</h2>
+          <p>{featured.data.description}</p>
+          <p style="margin-top:24px"><a href={`${Astro.base}/blog/${featured.slug}/`} style="font-weight:800">기사 읽기 →</a></p>
+        </div>
+        <div class="feature-side">
+          <div><div style="font-size:.8rem;opacity:.75">EDITOR'S NOTE</div><div style="font-size:1.25rem;font-weight:700;margin-top:8px">핵심부터 읽고, 필요한 부분을 깊게.</div></div>
+        </div>
+      </div>
+    </div>
+  </section>}
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head"><div><div class="eyebrow">Latest</div><h2>최근 글</h2></div><p>새로운 글은 검토 후 발행됩니다.</p></div>
+      <div class="grid">{latest.map(post => <ArticleCard post={post} />)}</div>
+    </div>
+  </section>
+</BaseLayout>
