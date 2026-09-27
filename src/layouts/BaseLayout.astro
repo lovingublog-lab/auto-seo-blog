@@ -1,8 +1,8 @@
 ---
 import '../styles/global.css';
 const {
-  title = 'LovingU Journal',
-  description = '생활과 기술을 더 명확하게 이해하기 위한 실용적인 인사이트를 전합니다.',
+  title = '생활기술노트',
+  description = '생활과 기술을 더 쉽게, 더 정확하게 이해할 수 있도록 실용적인 정보를 전합니다.',
   image = '',
   article = false,
   publishedTime,
@@ -11,7 +11,7 @@ const {
 } = Astro.props;
 const base = import.meta.env.BASE_URL;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const siteName = 'LovingU Journal';
+const siteName = '생활기술노트';
 const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
 const imageUrl = image ? new URL(image, Astro.site).href : undefined;
 const jsonLd = article ? {
@@ -47,7 +47,7 @@ const jsonLd = article ? {
   <meta name="description" content={description} />
   <link rel="canonical" href={canonical} />
   <link rel="icon" type="image/svg+xml" href={`${base}favicon.svg`} />
-  <link rel="alternate" type="application/rss+xml" title="LovingU Journal RSS" href={`${base}rss.xml`} />
+  <link rel="alternate" type="application/rss+xml" title="생활기술노트 RSS" href={`${base}rss.xml`} />
   <meta name="robots" content={indexable ? 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' : 'noindex,follow'} />
   <meta property="og:locale" content="ko_KR" />
   <meta property="og:type" content={article ? 'article' : 'website'} />
@@ -70,8 +70,8 @@ const jsonLd = article ? {
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href={base}>
-        <span class="brand-mark">L</span>
-        <span>LovingU Journal</span>
+        <span class="brand-mark">생</span>
+        <span>생활기술노트</span>
       </a>
       <nav class="nav" aria-label="주요 메뉴">
         <a href={base}>홈</a>
@@ -84,14 +84,14 @@ const jsonLd = article ? {
   <main><slot /></main>
   <footer class="site-footer">
     <div class="container footer-inner">
-      <div><strong>LovingU Journal</strong><br/>신뢰할 수 있는 정보와 실용적인 해설을 지향합니다.</div>
+      <div><strong>생활기술노트</strong><br/>생활과 기술을 더 쉽게, 더 정확하게 정리합니다.</div>
       <div class="footer-links">
         <a href={`${base}about/`}>소개</a>
         <a href={`${base}privacy/`}>개인정보처리방침</a>
         <a href={`${base}contact/`}>문의</a>
         <a href={`${base}rss.xml`}>RSS</a>
       </div>
-      <div>© {new Date().getFullYear()} LovingU Journal</div>
+      <div>© {new Date().getFullYear()} 생활기술노트</div>
     </div>
   </footer>
 </body>
