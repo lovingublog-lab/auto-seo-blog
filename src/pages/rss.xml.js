@@ -22,9 +22,9 @@ export async function GET({ site }) {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-<title>LovingU Journal</title>
+<title>생활기술노트</title>
 <link>${esc(base.href)}</link>
-<description>생활과 기술을 더 명확하게 이해하기 위한 실용적인 인사이트</description>
+<description>생활과 기술을 더 쉽게, 더 정확하게 이해하기 위한 실용 정보</description>
 <language>ko-KR</language>
 ${items}
 </channel>
