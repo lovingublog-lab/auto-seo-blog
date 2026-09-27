@@ -5,7 +5,7 @@ pubDate: 2026-09-27
 category: "스마트폰"
 tags: ["배터리", "안드로이드", "스마트폰"]
 featured: false
-draft: false
+draft: true
 ---
 
 스마트폰 배터리가 갑자기 빨리 줄어든다면 배터리 자체의 노화만 의심하기보다 최근 사용 패턴과 설정부터 확인하는 것이 좋습니다.
