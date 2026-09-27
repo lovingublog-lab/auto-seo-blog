@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content';
 const posts = (await getCollection('blog', ({data}) => !data.draft)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
 const featured = posts.find(p=>p.data.featured) || posts[0];
 const latest = posts.slice(0,6);
+const base = import.meta.env.BASE_URL;
 ---
 <BaseLayout title="LovingU Journal" description="생활, 기술, 디지털 도구를 더 잘 활용하도록 돕는 깊이 있는 실용 정보 블로그입니다.">
   <section class="hero">
@@ -25,7 +26,7 @@ const latest = posts.slice(0,6);
           <div class="eyebrow" style="color:#83d3cb">Featured Article</div>
           <h2>{featured.data.title}</h2>
           <p>{featured.data.description}</p>
-          <p style="margin-top:24px"><a href={`${Astro.base}/blog/${featured.slug}/`} style="font-weight:800">기사 읽기 →</a></p>
+          <p style="margin-top:24px"><a href={`${base}blog/${featured.slug}/`} style="font-weight:800">기사 읽기 →</a></p>
         </div>
         <div class="feature-side">
           <div><div style="font-size:.8rem;opacity:.75">EDITOR'S NOTE</div><div style="font-size:1.25rem;font-weight:700;margin-top:8px">핵심부터 읽고, 필요한 부분을 깊게.</div></div>
