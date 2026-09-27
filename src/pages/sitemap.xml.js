@@ -3,7 +3,7 @@ import { getCollection } from 'astro:content';
 const esc = (value) => value.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 
 export async function GET({ site }) {
-  const base = new URL('/auto-seo-blog/', site);
+  const base = new URL('/', site);
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   const staticPaths = ['', 'articles/', 'about/', 'privacy/', 'contact/'];
   const staticUrls = staticPaths.map(path => ({ loc:new URL(path, base).href }));
