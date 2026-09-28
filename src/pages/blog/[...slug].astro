@@ -19,7 +19,7 @@ const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'n
       <h1>{d.title}</h1>
       <p class="lead">{d.description}</p>
       <div class="card-meta" style="margin-bottom:30px"><span>{date}</span><span>{d.tags.join(' · ')}</span></div>
-      {d.image && <div class="article-hero"><img src={d.image} alt={d.imageAlt || d.title} width="1200" height="675" /></div>}
+      {d.image && <div class="article-hero"><img src={d.image} alt={d.imageAlt || d.title} width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" /></div>}
       <Content />
     </article>
   </div>
