@@ -86,5 +86,16 @@ const jsonLd = article ? {
       <div>© {new Date().getFullYear()} 생활기술노트</div>
     </div>
   </footer>
+  <script is:inline>
+    document.querySelectorAll('a[href]').forEach((link) => {
+      try {
+        const url = new URL(link.getAttribute('href'), window.location.href);
+        if ((url.protocol === 'http:' || url.protocol === 'https:') && url.origin !== window.location.origin) {
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+        }
+      } catch {}
+    });
+  </script>
 </body>
 </html>
