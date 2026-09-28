@@ -89,6 +89,8 @@ draft: false
 
 ## 관련 글과 참고 자료
 
+저장공간 경고가 이미 뜬 상태라면 [스마트폰 저장공간이 부족할 때 정리 순서](/blog/smartphone-storage-full-cleanup/)에서 사진 외에 다운로드·오프라인 콘텐츠·앱까지 함께 점검할 수 있습니다.
+
 사진과 앱 사용을 함께 정리하고 싶다면 [스마트폰 알림 정리 기준](/blog/smartphone-notification-organize/)도 참고할 수 있습니다.
 
 Google 포토를 사용하는 경우 백업 상태, 계정 저장공간, 업로드 가능한 파일 조건은 [Google 포토 고객센터의 사진 및 동영상 백업 안내](https://support.google.com/photos/answer/6193313?hl=ko)에서 최신 기준을 확인할 수 있습니다.
