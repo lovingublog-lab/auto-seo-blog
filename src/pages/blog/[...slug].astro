@@ -4,23 +4,68 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
 export async function getStaticPaths() {
   const now = new Date();
-  const posts = await getCollection('blog', ({data})=>!data.draft && data.pubDate <= now);
-  return posts.map(post => ({ params:{slug:post.slug}, props:{post} }));
+  const posts = await getCollection('blog', ({data}) => !data.draft && data.pubDate <= now);
+  return posts.map(post => ({ params: {slug: post.slug}, props: {post} }));
 }
+
 const { post } = Astro.props;
 const { Content } = await post.render();
 const d = post.data;
-const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(d.pubDate);
+const base = import.meta.env.BASE_URL;
+const formatDate = (value) => new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(value);
+const publishedDate = formatDate(d.pubDate);
+const updatedDate = d.updatedDate ? formatDate(d.updatedDate) : '';
+const allPosts = await getCollection('blog', ({data}) => !data.draft && data.pubDate <= new Date());
+const related = allPosts
+  .filter(candidate => candidate.slug !== post.slug)
+  .map(candidate => {
+    const sharedTags = (candidate.data.tags || []).filter(tag => (d.tags || []).includes(tag)).length;
+    const score = (candidate.data.category === d.category ? 4 : 0) + sharedTags * 2;
+    return { post: candidate, score };
+  })
+  .filter(item => item.score > 0)
+  .sort((a,b) => b.score - a.score || b.post.data.pubDate.valueOf() - a.post.data.pubDate.valueOf())
+  .slice(0,3);
 ---
-<BaseLayout title={d.title} description={d.description} image={d.image} article={true} publishedTime={d.pubDate.toISOString()} modifiedTime={d.updatedDate?.toISOString()}>
+<BaseLayout title={d.title} description={d.description} image={d.image} imageAlt={d.imageAlt} article={true} publishedTime={d.pubDate.toISOString()} modifiedTime={d.updatedDate?.toISOString()}>
   <div class="article-wrap">
     <article class="article">
-      <div class="card-kicker">{d.category}</div>
+      <nav class="breadcrumbs" aria-label="현재 위치">
+        <a href={base}>홈</a><span aria-hidden="true">›</span>
+        <a href={`${base}articles/`}>전체 글</a><span aria-hidden="true">›</span>
+        <span aria-current="page">{d.title}</span>
+      </nav>
+      <div class="article-kicker">{d.category}</div>
       <h1>{d.title}</h1>
       <p class="lead">{d.description}</p>
-      <div class="card-meta" style="margin-bottom:30px"><span>{date}</span><span>{d.tags.join(' · ')}</span></div>
+      <div class="article-meta">
+        <span>발행 <time datetime={d.pubDate.toISOString()}>{publishedDate}</time></span>
+        {d.updatedDate && <span>수정 <time datetime={d.updatedDate.toISOString()}>{updatedDate}</time></span>}
+        {d.tags?.length > 0 && <span class="article-meta-tags">{d.tags.slice(0,3).join(' · ')}</span>}
+      </div>
       {d.image && <div class="article-hero"><img src={d.image} alt={d.imageAlt || d.title} width="1200" height="675" loading="eager" fetchpriority="high" decoding="async" /></div>}
       <Content />
+      {related.length > 0 && (
+        <section class="related-section" aria-labelledby="related-heading">
+          <div class="related-head">
+            <div>
+              <div class="related-eyebrow">Related</div>
+              <h2 id="related-heading">같이 읽으면 좋은 글</h2>
+            </div>
+            <a href={`${base}articles/`}>전체 글 보기 →</a>
+          </div>
+          <div class="related-grid">
+            {related.map(({post: item}) => (
+              <a class="related-card" href={`${base}blog/${item.slug}/`}>
+                {item.data.image && <img src={item.data.image} alt={item.data.imageAlt || item.data.title} width="1200" height="675" loading="lazy" decoding="async" />}
+                <span>{item.data.category}</span>
+                <strong>{item.data.title}</strong>
+                <p>{item.data.description}</p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
     </article>
   </div>
 </BaseLayout>

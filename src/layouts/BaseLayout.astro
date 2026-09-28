@@ -73,9 +73,19 @@ const jsonLd = article ? {
   <header class="site-header">
     <div class="container header-inner">
       <a class="brand" href={base}><span class="brand-mark">생</span><span>생활기술노트</span></a>
-      <nav class="nav" aria-label="주요 메뉴">
+      <nav class="nav desktop-nav" aria-label="주요 메뉴">
         <a href={base}>홈</a><a href={`${base}articles/`}>전체 글</a><a href={`${base}about/`}>소개</a><a class="nav-cta" href={`${base}contact/`}>문의</a><a href={`${base}search/`}>검색</a>
       </nav>
+      <details class="mobile-menu">
+        <summary>메뉴</summary>
+        <nav class="mobile-menu-panel" aria-label="모바일 메뉴">
+          <a href={base}>홈</a>
+          <a href={`${base}articles/`}>전체 글</a>
+          <a href={`${base}search/`}>검색</a>
+          <a href={`${base}about/`}>소개</a>
+          <a href={`${base}contact/`}>문의</a>
+        </nav>
+      </details>
     </div>
   </header>
   <main><slot /></main>

@@ -2,10 +2,63 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
+
 const now = new Date();
-const posts = (await getCollection('blog', ({data})=>!data.draft&&data.pubDate<=now)).sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+const posts = (await getCollection('blog', ({data}) => !data.draft && data.pubDate <= now))
+  .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const categories = [...new Set(posts.map(post => post.data.category))].sort((a,b) => a.localeCompare(b,'ko'));
 ---
 <BaseLayout title="전체 글" description="생활기술노트에 발행된 스마트폰·디지털 생활 실용 가이드를 한곳에서 확인하세요.">
-  <section class="hero" style="padding:62px 0 42px"><div class="container"><div class="eyebrow">Archive</div><h1 style="font-size:clamp(2.5rem,6vw,4.5rem)">전체 글</h1><p>분류보다 먼저, 필요한 답을 빠르게 찾을 수 있도록 정리합니다.</p></div></section>
-  <section class="section"><div class="container"><div class="grid">{posts.map(post=><ArticleCard post={post}/>)}</div></div></section>
+  <section class="hero archive-hero">
+    <div class="container">
+      <div class="eyebrow">Archive</div>
+      <h1>전체 글</h1>
+      <p>필요한 주제를 카테고리로 좁혀 실용 가이드를 빠르게 찾아보세요.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <div class="category-filter" role="group" aria-label="글 카테고리 필터">
+        <button type="button" class="category-filter-button is-active" data-filter="all" aria-pressed="true">전체 <span>{posts.length}</span></button>
+        {categories.map(category => (
+          <button type="button" class="category-filter-button" data-filter={category} aria-pressed="false">
+            {category} <span>{posts.filter(post => post.data.category === category).length}</span>
+          </button>
+        ))}
+      </div>
+      <p id="filterCount" class="filter-count">전체 {posts.length}개의 글</p>
+      <div class="grid filter-grid">
+        {posts.map(post => (
+          <div class="article-filter-item" data-category={post.data.category}>
+            <ArticleCard post={post}/>
+          </div>
+        ))}
+      </div>
+      <p id="filterEmpty" class="filter-empty" hidden>이 카테고리에는 아직 발행된 글이 없습니다.</p>
+    </div>
+  </section>
+  <script is:inline>
+    const filterButtons = [...document.querySelectorAll('.category-filter-button')];
+    const filterItems = [...document.querySelectorAll('.article-filter-item')];
+    const filterCount = document.getElementById('filterCount');
+    const filterEmpty = document.getElementById('filterEmpty');
+    filterButtons.forEach((button) => {
+      button.addEventListener('click', () => {
+        const selected = button.dataset.filter;
+        let visible = 0;
+        filterButtons.forEach((item) => {
+          const active = item === button;
+          item.classList.toggle('is-active', active);
+          item.setAttribute('aria-pressed', String(active));
+        });
+        filterItems.forEach((item) => {
+          const show = selected === 'all' || item.dataset.category === selected;
+          item.hidden = !show;
+          if (show) visible++;
+        });
+        filterCount.textContent = selected === 'all' ? '전체 ' + visible + '개의 글' : selected + ' · ' + visible + '개의 글';
+        filterEmpty.hidden = visible !== 0;
+      });
+    });
+  </script>
 </BaseLayout>
