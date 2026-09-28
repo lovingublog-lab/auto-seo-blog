@@ -73,7 +73,7 @@ img{max-width:100%;height:auto;display:block}
   .grid{grid-template-columns:1fr}
   .section{padding:46px 0}
   .section-head{align-items:start;flex-direction:column}
-  .article-wrap{padding:28px 0 54px}
+  .article-wrap{padding:28px 18px 54px}
   .article{padding:0}
   .article h1{font-size:2rem}
   .article .lead{font-size:1rem}
