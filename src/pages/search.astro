@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import {getCollection} from 'astro:content';
+
+const now = new Date();
+const posts = (await getCollection('blog', ({data}) => !data.draft && data.pubDate <= now))
+  .sort((a,b)=>b.data.pubDate.valueOf()-a.data.pubDate.valueOf());
+const base = import.meta.env.BASE_URL;
+---
+<BaseLayout title="검색" description="생활기술노트의 글을 제목, 설명, 태그와 카테고리로 검색합니다." indexable={false}>
+  <section class="search-page">
+    <div class="container search-shell">
+      <div class="eyebrow">Search</div>
+      <h1>글 검색</h1>
+      <p class="search-intro">제목, 설명, 카테고리 또는 태그를 입력하세요.</p>
+      <label class="search-box">
+        <span class="sr-only">검색어</span>
+        <input id="postSearch" type="search" inputmode="search" placeholder="예: 사진 백업, 냉장고, 호텔, PDF" autocomplete="off" />
+      </label>
+      <p id="searchCount" class="search-count">전체 {posts.length}개의 글</p>
+
+      <div id="searchResults" class="search-results">
+        {posts.map(post => (
+          <article
+            class="search-item"
+            data-search={[post.data.title,post.data.description,post.data.category,...(post.data.tags || [])].join(' ').toLocaleLowerCase('ko-KR')}
+          >
+            <div class="search-item-meta">{post.data.category}</div>
+            <h2><a href={`${base}blog/${post.slug}/`}>{post.data.title}</a></h2>
+            <p>{post.data.description}</p>
+          </article>
+        ))}
+      </div>
+      <p id="searchEmpty" class="search-empty" hidden>검색 결과가 없습니다. 다른 단어로 검색해 보세요.</p>
+    </div>
+  </section>
+
+  <script is:inline>
+    const input = document.getElementById('postSearch');
+    const items = [...document.querySelectorAll('.search-item')];
+    const count = document.getElementById('searchCount');
+    const empty = document.getElementById('searchEmpty');
+    const params = new URLSearchParams(location.search);
+    const initial = params.get('q') || '';
+
+    const apply = () => {
+      const q = (input.value || '').trim().toLocaleLowerCase('ko-KR');
+      let visible = 0;
+      items.forEach(item => {
+        const show = !q || item.dataset.search.includes(q);
+        item.hidden = !show;
+        if (show) visible++;
+      });
+      count.textContent = q ? visible + '개의 검색 결과' : '전체 ' + items.length + '개의 글';
+      empty.hidden = visible !== 0;
+    };
+
+    input.value = initial;
+    apply();
+    input.addEventListener('input', apply);
+  </script>
+</BaseLayout>
