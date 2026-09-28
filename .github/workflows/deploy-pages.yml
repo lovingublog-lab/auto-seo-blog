@@ -30,6 +30,14 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Build
         run: npm run build
+      - name: Verify SEO output
+        run: |
+          test -f dist/index.html
+          test -f dist/robots.txt
+          test -f dist/sitemap.xml
+          grep -q 'rel="canonical"' dist/index.html
+          grep -q '<urlset' dist/sitemap.xml
+          grep -q 'Sitemap:' dist/robots.txt
       - name: Setup Pages
         uses: actions/configure-pages@v5
         with:
