@@ -4,6 +4,7 @@ const {
   title = '생활기술노트',
   description = '생활과 기술을 더 쉽게, 더 정확하게 이해할 수 있도록 실용적인 정보를 전합니다.',
   image = '',
+  imageAlt = '',
   article = false,
   publishedTime,
   modifiedTime,
@@ -14,26 +15,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 const siteName = '생활기술노트';
 const fullTitle = title === siteName ? title : `${title} | ${siteName}`;
 const imageUrl = image ? new URL(image, Astro.site).href : undefined;
+const homeUrl = new URL(base, Astro.site).href;
+const articlesUrl = new URL(`${base}articles/`, Astro.site).href;
+const organization = {'@type':'Organization','@id':`${homeUrl}#organization`,name:siteName,url:homeUrl};
 const jsonLd = article ? {
   '@context':'https://schema.org',
-  '@type':'Article',
-  headline:title,
-  description,
-  url:canonical.href,
-  mainEntityOfPage:{'@type':'WebPage','@id':canonical.href},
-  inLanguage:'ko-KR',
-  datePublished:publishedTime,
-  dateModified:modifiedTime || publishedTime,
-  ...(imageUrl ? { image:[imageUrl] } : {}),
-  author:{'@type':'Organization',name:siteName,url:new URL(base, Astro.site).href},
-  publisher:{'@type':'Organization',name:siteName,url:new URL(base, Astro.site).href}
+  '@graph':[
+    {'@type':'Article',headline:title,description,url:canonical.href,mainEntityOfPage:{'@type':'WebPage','@id':canonical.href},inLanguage:'ko-KR',datePublished:publishedTime,dateModified:modifiedTime||publishedTime,...(imageUrl?{image:[imageUrl]}:{}),author:{'@id':organization['@id']},publisher:{'@id':organization['@id']}},
+    {'@type':'BreadcrumbList',itemListElement:[
+      {'@type':'ListItem',position:1,name:siteName,item:homeUrl},
+      {'@type':'ListItem',position:2,name:'전체 글',item:articlesUrl},
+      {'@type':'ListItem',position:3,name:title,item:canonical.href}
+    ]},
+    organization
+  ]
 } : {
   '@context':'https://schema.org',
-  '@type':'WebSite',
-  name:siteName,
-  url:new URL(base, Astro.site).href,
-  description,
-  inLanguage:'ko-KR'
+  '@graph':[
+    {'@type':'WebSite','@id':`${homeUrl}#website`,name:siteName,url:homeUrl,description,inLanguage:'ko-KR',publisher:{'@id':organization['@id']}},
+    organization
+  ]
 };
 ---
 <!doctype html>
@@ -56,13 +57,14 @@ const jsonLd = article ? {
   <meta property="og:url" content={canonical} />
   <meta property="og:site_name" content={siteName} />
   {imageUrl && <meta property="og:image" content={imageUrl} />}
-  {imageUrl && <meta property="og:image:alt" content={title} />}
+  {imageUrl && <meta property="og:image:alt" content={imageAlt || title} />}
   {article && publishedTime && <meta property="article:published_time" content={publishedTime} />}
   {article && (modifiedTime || publishedTime) && <meta property="article:modified_time" content={modifiedTime || publishedTime} />}
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content={fullTitle} />
   <meta name="twitter:description" content={description} />
   {imageUrl && <meta name="twitter:image" content={imageUrl} />}
+  {imageUrl && <meta name="twitter:image:alt" content={imageAlt || title} />}
   <meta name="theme-color" content="#153a65" />
   {article && <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9371741860593701" crossorigin="anonymous"></script>}
   <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
@@ -70,15 +72,9 @@ const jsonLd = article ? {
 <body>
   <header class="site-header">
     <div class="container header-inner">
-      <a class="brand" href={base}>
-        <span class="brand-mark">생</span>
-        <span>생활기술노트</span>
-      </a>
+      <a class="brand" href={base}><span class="brand-mark">생</span><span>생활기술노트</span></a>
       <nav class="nav" aria-label="주요 메뉴">
-        <a href={base}>홈</a>
-        <a href={`${base}articles/`}>전체 글</a>
-        <a href={`${base}about/`}>소개</a>
-        <a class="nav-cta" href={`${base}contact/`}>문의</a><a href={`${base}search/`}>검색</a>
+        <a href={base}>홈</a><a href={`${base}articles/`}>전체 글</a><a href={`${base}about/`}>소개</a><a class="nav-cta" href={`${base}contact/`}>문의</a><a href={`${base}search/`}>검색</a>
       </nav>
     </div>
   </header>
@@ -86,12 +82,7 @@ const jsonLd = article ? {
   <footer class="site-footer">
     <div class="container footer-inner">
       <div><strong>생활기술노트</strong><br/>생활과 기술을 더 쉽게, 더 정확하게 정리합니다.</div>
-      <div class="footer-links">
-        <a href={`${base}about/`}>소개</a>
-        <a href={`${base}privacy/`}>개인정보처리방침</a>
-        <a href={`${base}contact/`}>문의</a>
-        <a href={`${base}rss.xml`}>RSS</a>
-      </div>
+      <div class="footer-links"><a href={`${base}about/`}>소개</a><a href={`${base}privacy/`}>개인정보처리방침</a><a href={`${base}contact/`}>문의</a><a href={`${base}rss.xml`}>RSS</a></div>
       <div>© {new Date().getFullYear()} 생활기술노트</div>
     </div>
   </footer>
