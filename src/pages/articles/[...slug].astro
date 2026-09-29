@@ -3,9 +3,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCard from '../../components/ArticleCard.astro';
 import { getCollection } from 'astro:content';
 
-const PAGE_SIZE = 12;
-
 export async function getStaticPaths() {
+  const PAGE_SIZE = 12;
   function categoryKey(category) {
     let hash = 2166136261;
     for (let i = 0; i < category.length; i++) {
