@@ -5,21 +5,20 @@ import { getCollection } from 'astro:content';
 
 const PAGE_SIZE = 12;
 
-function categoryKey(category) {
-  let hash = 2166136261;
-  for (let i = 0; i < category.length; i++) {
-    hash ^= category.charCodeAt(i);
-    hash = Math.imul(hash, 16777619);
-  }
-  return 'c-' + (hash >>> 0).toString(36);
-}
-
-function routeSlug(categorySlug, page) {
-  if (categorySlug) return page === 1 ? 'category/' + categorySlug : 'category/' + categorySlug + '/page/' + page;
-  return page === 1 ? undefined : 'page/' + page;
-}
-
 export async function getStaticPaths() {
+  function categoryKey(category) {
+    let hash = 2166136261;
+    for (let i = 0; i < category.length; i++) {
+      hash ^= category.charCodeAt(i);
+      hash = Math.imul(hash, 16777619);
+    }
+    return 'c-' + (hash >>> 0).toString(36);
+  }
+
+  function routeSlug(categorySlug, page) {
+    if (categorySlug) return page === 1 ? 'category/' + categorySlug : 'category/' + categorySlug + '/page/' + page;
+    return page === 1 ? undefined : 'page/' + page;
+  }
   const now = new Date();
   const allPosts = (await getCollection('blog', ({data}) => !data.draft && data.pubDate <= now))
     .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
