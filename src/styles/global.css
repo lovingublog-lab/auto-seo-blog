@@ -199,3 +199,14 @@ img{max-width:100%;height:auto;display:block}
   .category-filter::-webkit-scrollbar{display:none}
   .category-filter-button{flex:0 0 auto}
 }
+
+/* Static archive pagination */
+.category-filter-button{display:inline-flex;align-items:center;gap:4px;text-decoration:none;white-space:nowrap}
+.pagination{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:34px 0 0}
+.pagination-link{min-width:40px;height:40px;padding:0 12px;border:1px solid var(--line);border-radius:10px;background:#fff;color:var(--muted);display:inline-flex;align-items:center;justify-content:center;text-decoration:none;font-size:.9rem;font-weight:700}
+.pagination-link:hover{border-color:var(--accent);color:var(--accent);background:var(--soft,var(--surface-soft,#f7f8fa))}
+.pagination-link.is-current{border-color:var(--accent);background:var(--accent);color:#fff}
+.pagination-link.is-disabled{opacity:.4;pointer-events:none}
+.pagination-direction{min-width:76px}
+.pagination-ellipsis{color:var(--muted);padding:0 2px}
+@media(max-width:720px){.pagination{gap:6px}.pagination-link{min-width:36px;height:38px;padding:0 10px}.pagination-direction{min-width:70px}}

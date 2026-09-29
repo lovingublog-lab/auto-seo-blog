@@ -1,0 +1,165 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import { getCollection } from 'astro:content';
+
+const PAGE_SIZE = 12;
+
+function categoryKey(category) {
+  let hash = 2166136261;
+  for (let i = 0; i < category.length; i++) {
+    hash ^= category.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
+  }
+  return 'c-' + (hash >>> 0).toString(36);
+}
+
+function routeSlug(categorySlug, page) {
+  if (categorySlug) return page === 1 ? 'category/' + categorySlug : 'category/' + categorySlug + '/page/' + page;
+  return page === 1 ? undefined : 'page/' + page;
+}
+
+export async function getStaticPaths() {
+  const now = new Date();
+  const allPosts = (await getCollection('blog', ({data}) => !data.draft && data.pubDate <= now))
+    .sort((a,b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+  const categories = [...new Set(allPosts.map(post => post.data.category))]
+    .sort((a,b) => a.localeCompare(b,'ko'))
+    .map(name => ({
+      name,
+      slug: categoryKey(name),
+      count: allPosts.filter(post => post.data.category === name).length
+    }));
+
+  const paths = [];
+  const addScope = (scopePosts, activeCategory = null, categorySlug = null) => {
+    const totalPages = Math.max(1, Math.ceil(scopePosts.length / PAGE_SIZE));
+    for (let page = 1; page <= totalPages; page++) {
+      paths.push({
+        params: { slug: routeSlug(categorySlug, page) },
+        props: {
+          pagePosts: scopePosts.slice((page - 1) * PAGE_SIZE, page * PAGE_SIZE),
+          currentPage: page,
+          totalPages,
+          totalCount: scopePosts.length,
+          activeCategory,
+          activeCategorySlug: categorySlug,
+          categories
+        }
+      });
+    }
+  };
+
+  addScope(allPosts);
+  for (const category of categories) {
+    addScope(
+      allPosts.filter(post => post.data.category === category.name),
+      category.name,
+      category.slug
+    );
+  }
+  return paths;
+}
+
+const {
+  pagePosts,
+  currentPage,
+  totalPages,
+  totalCount,
+  activeCategory,
+  activeCategorySlug,
+  categories
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const archiveRoot = base + 'articles/';
+const pageHref = (categorySlug, page) => {
+  const root = categorySlug ? archiveRoot + 'category/' + categorySlug + '/' : archiveRoot;
+  return page === 1 ? root : root + 'page/' + page + '/';
+};
+
+const title = activeCategory
+  ? activeCategory + ' 글' + (currentPage > 1 ? ' ' + currentPage + '페이지' : '')
+  : '전체 글' + (currentPage > 1 ? ' ' + currentPage + '페이지' : '');
+
+const description = activeCategory
+  ? '생활기술노트의 ' + activeCategory + ' 관련 글을 모아봅니다.'
+  : "생활기술노트에 발행된 스마트폰·디지털 생활 실용 가이드를 한곳에서 확인하세요.";
+
+const start = Math.max(1, Math.min(currentPage - 2, Math.max(1, totalPages - 4)));
+const end = Math.min(totalPages, start + 4);
+const pageNumbers = Array.from({length: Math.max(0, end - start + 1)}, (_, i) => start + i);
+---
+<BaseLayout title={title} description={description} indexable={!activeCategory}>
+  <section class="hero archive-hero">
+    <div class="container">
+      <div class="eyebrow">Archive</div>
+      <h1>{activeCategory || '전체 글'}</h1>
+      <p>필요한 주제를 카테고리로 좁혀 실용 가이드를 빠르게 찾아보세요.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <nav class="category-filter" aria-label="글 카테고리">
+        <a class:list={['category-filter-button', { 'is-active': !activeCategory }]} href={archiveRoot}>
+          전체 <span>{categories.reduce((sum, category) => sum + category.count, 0)}</span>
+        </a>
+        {categories.map(category => (
+          <a
+            class:list={['category-filter-button', { 'is-active': activeCategory === category.name }]}
+            href={pageHref(category.slug, 1)}
+          >
+            {category.name} <span>{category.count}</span>
+          </a>
+        ))}
+      </nav>
+
+      <p class="filter-count">
+        {activeCategory ? activeCategory + ' · ' + totalCount + '개의 글' : '전체 ' + totalCount + '개의 글'}
+        {totalPages > 1 && ' · ' + currentPage + '/' + totalPages + '페이지'}
+      </p>
+
+      <div class="grid filter-grid">
+        {pagePosts.map(post => (
+          <div class="article-filter-item">
+            <ArticleCard post={post}/>
+          </div>
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <nav class="pagination" aria-label="글 목록 페이지 이동">
+          {currentPage > 1
+            ? <a class="pagination-link pagination-direction" href={pageHref(activeCategorySlug, currentPage - 1)}>← 이전</a>
+            : <span class="pagination-link pagination-direction is-disabled" aria-hidden="true">← 이전</span>}
+
+          {start > 1 && (
+            <>
+              <a class="pagination-link" href={pageHref(activeCategorySlug, 1)}>1</a>
+              {start > 2 && <span class="pagination-ellipsis" aria-hidden="true">…</span>}
+            </>
+          )}
+
+          {pageNumbers.map(page => (
+            page === currentPage
+              ? <span class="pagination-link is-current" aria-current="page">{page}</span>
+              : <a class="pagination-link" href={pageHref(activeCategorySlug, page)}>{page}</a>
+          ))}
+
+          {end < totalPages && (
+            <>
+              {end < totalPages - 1 && <span class="pagination-ellipsis" aria-hidden="true">…</span>}
+              <a class="pagination-link" href={pageHref(activeCategorySlug, totalPages)}>{totalPages}</a>
+            </>
+          )}
+
+          {currentPage < totalPages
+            ? <a class="pagination-link pagination-direction" href={pageHref(activeCategorySlug, currentPage + 1)}>다음 →</a>
+            : <span class="pagination-link pagination-direction is-disabled" aria-hidden="true">다음 →</span>}
+        </nav>
+      )}
+    </div>
+  </section>
+</BaseLayout>
