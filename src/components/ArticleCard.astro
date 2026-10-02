@@ -1,7 +1,7 @@
 ---
 const { post } = Astro.props;
 const { title, description, category, pubDate, tags, image, imageAlt } = post.data;
-const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric'}).format(pubDate);
+const date = new Intl.DateTimeFormat('ko-KR',{year:'numeric',month:'long',day:'numeric',timeZone:'Asia/Seoul'}).format(pubDate);
 const base = import.meta.env.BASE_URL;
 ---
 <article class="card">
