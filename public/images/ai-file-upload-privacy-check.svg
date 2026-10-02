@@ -1,1 +1,41 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675"><rect width="1200" height="675" fill="#eef2ff"/><rect x="110" y="110" width="500" height="455" rx="36" fill="#fff"/><rect x="170" y="170" width="190" height="250" rx="22" fill="#f8fafc" stroke="#94a3b8" stroke-width="4"/><path d="M215 215h88l34 34v120H215z" fill="#fff" stroke="#64748b" stroke-width="4"/><path d="M303 215v36h34" fill="none" stroke="#64748b" stroke-width="4"/><rect x="235" y="286" width="82" height="12" rx="6" fill="#fca5a5"/><rect x="235" y="315" width="58" height="12" rx="6" fill="#fdba74"/><circle cx="415" cy="295" r="82" fill="#dcfce7"/><path d="M415 240l48 20v40c0 38-23 64-48 79-25-15-48-41-48-79v-40z" fill="#22c55e"/><path d="M392 301l16 16 31-38" fill="none" stroke="#fff" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><rect x="700" y="145" width="370" height="385" rx="46" fill="#111827"/><rect x="750" y="205" width="270" height="65" rx="20" fill="#1f2937"/><circle cx="790" cy="237" r="14" fill="#38bdf8"/><rect x="820" y="225" width="140" height="12" rx="6" fill="#64748b"/><rect x="820" y="248" width="90" height="9" rx="4.5" fill="#475569"/><path d="M750 345c55-66 125-70 191-18 42 33 75 41 101 31" fill="none" stroke="#38bdf8" stroke-width="12" stroke-linecap="round"/><rect x="770" y="410" width="230" height="70" rx="22" fill="#0f172a" stroke="#334155" stroke-width="3"/><path d="M805 445h160" stroke="#64748b" stroke-width="11" stroke-linecap="round"/><path d="M620 335h70" stroke="#4f46e5" stroke-width="8" stroke-linecap="round"/><path d="M665 309l32 26-32 26" fill="none" stroke="#4f46e5" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<defs>
+  <linearGradient id="desk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eef2ff"/><stop offset="1" stop-color="#e0e7ff"/></linearGradient>
+  <filter id="sh"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-opacity=".16"/></filter>
+</defs>
+<rect width="1200" height="675" fill="url(#desk)"/>
+<rect y="500" width="1200" height="175" fill="#cbd5e1"/>
+<g filter="url(#sh)">
+  <rect x="95" y="110" width="390" height="430" rx="26" fill="#fff"/>
+  <rect x="135" y="155" width="310" height="46" rx="12" fill="#e2e8f0"/>
+  <rect x="135" y="225" width="140" height="18" rx="9" fill="#cbd5e1"/>
+  <rect x="135" y="260" width="265" height="16" rx="8" fill="#e2e8f0"/>
+  <rect x="135" y="292" width="235" height="16" rx="8" fill="#e2e8f0"/>
+  <rect x="135" y="338" width="205" height="68" rx="14" fill="#fee2e2"/>
+  <rect x="157" y="358" width="160" height="10" rx="5" fill="#fca5a5"/>
+  <rect x="157" y="381" width="118" height="10" rx="5" fill="#fca5a5"/>
+  <rect x="135" y="438" width="250" height="18" rx="9" fill="#dbeafe"/>
+</g>
+<g filter="url(#sh)">
+  <rect x="510" y="165" width="205" height="280" rx="22" fill="#f8fafc"/>
+  <rect x="545" y="202" width="135" height="40" rx="10" fill="#dcfce7"/>
+  <rect x="545" y="268" width="115" height="14" rx="7" fill="#94a3b8"/>
+  <rect x="545" y="300" width="135" height="14" rx="7" fill="#cbd5e1"/>
+  <rect x="545" y="342" width="92" height="54" rx="12" fill="#dbeafe"/>
+</g>
+<g filter="url(#sh)">
+  <rect x="755" y="105" width="355" height="405" rx="34" fill="#111827"/>
+  <rect x="790" y="145" width="285" height="44" rx="14" fill="#1f2937"/>
+  <circle cx="820" cy="167" r="9" fill="#60a5fa"/>
+  <rect x="842" y="160" width="130" height="9" rx="4.5" fill="#64748b"/>
+  <rect x="800" y="225" width="220" height="72" rx="18" fill="#1e293b"/>
+  <rect x="824" y="247" width="152" height="10" rx="5" fill="#94a3b8"/>
+  <rect x="824" y="267" width="118" height="9" rx="4.5" fill="#64748b"/>
+  <rect x="850" y="325" width="225" height="82" rx="18" fill="#312e81"/>
+  <rect x="875" y="350" width="150" height="10" rx="5" fill="#c4b5fd"/>
+  <rect x="875" y="371" width="118" height="9" rx="4.5" fill="#a5b4fc"/>
+  <rect x="800" y="438" width="275" height="34" rx="17" fill="#0f172a" stroke="#334155" stroke-width="2"/>
+</g>
+<rect x="472" y="470" width="285" height="34" rx="17" fill="#94a3b8" opacity=".45"/>
+<circle cx="626" cy="552" r="38" fill="#f8fafc"/><rect x="606" y="531" width="40" height="42" rx="8" fill="#6366f1"/>
+</svg>
