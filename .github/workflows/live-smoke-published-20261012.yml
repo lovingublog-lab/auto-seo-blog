@@ -1,0 +1,43 @@
+name: Verify live pages and cover images
+
+on:
+  workflow_run:
+    workflows: ["Deploy Astro site to Pages"]
+    types: [completed]
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  live-smoke-test:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check live article, SVG, home and archive cards
+        shell: bash
+        run: |
+          set -euo pipefail
+          work="$(mktemp -d)"
+          while IFS='|' read -r host slug; do
+            site="https://${host}"
+            echo "::group::${site} / ${slug}"
+            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/blog/${slug}/" -o "${work}/article.html"
+            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/images/${slug}.svg" -o "${work}/cover.svg"
+            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/" -o "${work}/home.html"
+            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/articles/" -o "${work}/archive.html"
+            grep -Fq "/images/${slug}.svg" "${work}/article.html"
+            grep -Fq "<svg " "${work}/cover.svg"
+            grep -Fq "width=\"1200\" height=\"675\"" "${work}/cover.svg"
+            grep -Fq "/images/${slug}.svg" "${work}/home.html"
+            grep -Fq "/images/${slug}.svg" "${work}/archive.html"
+            grep -Fq "2026년 10월 12일" "${work}/article.html"
+            echo "PASS: live page, SVG, home card, archive card, KST date"
+            echo "::endgroup::"
+          done <<'SITES'
+          lifetechnote.com|smartphone-app-crash-one-app-or-system
+          homelifenote.com|refrigerator-vegetable-wilting-moisture-storage
+          travelreadynote.com|train-platform-change-station-check
+          worktoolnote.com|shared-file-link-permission-before-sending
+          SITES
