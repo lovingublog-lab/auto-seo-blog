@@ -15,41 +15,65 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - name: Check live article, SVG, home and archive cards
+      - name: Verify published pages, SVG, and current cover cards
         shell: bash
         run: |
-          set -euo pipefail
-          work="$(mktemp -d)"
-          while IFS='|' read -r host slug expected_date; do
-            site="https://${host}"
-            echo "::group::${site} / ${slug}"
-            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/blog/${slug}/" -o "${work}/article.html"
-            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/images/${slug}.svg" -o "${work}/cover.svg"
-            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/" -o "${work}/home.html"
-            curl -fLsS --retry 6 --retry-delay 5 --retry-all-errors --max-time 30 "${site}/articles/" -o "${work}/archive.html"
-            grep -Fq "/images/${slug}.svg" "${work}/article.html"
-            grep -Fq "<svg " "${work}/cover.svg"
-            grep -Fq "width=\"1200\" height=\"675\"" "${work}/cover.svg"
-            grep -Fq "/images/${slug}.svg" "${work}/home.html"
-            grep -Fq "/images/${slug}.svg" "${work}/archive.html"
-            grep -Fq "${expected_date}" "${work}/article.html"
-            echo "PASS: live page, SVG, home card, archive card, KST date"
-            echo "::endgroup::"
-          done <<'SITES'
-          lifetechnote.com|smartphone-app-crash-one-app-or-system|2026년 10월 12일
-          homelifenote.com|refrigerator-vegetable-wilting-moisture-storage|2026년 10월 12일
-          travelreadynote.com|train-platform-change-station-check|2026년 10월 12일
-          worktoolnote.com|shared-file-link-permission-before-sending|2026년 10월 12일
-          lifetechnote.com|login-alert-not-me-account-safety|2026년 10월 13일
-          homelifenote.com|kitchen-utensil-drawer-access-storage|2026년 10월 13일
-          travelreadynote.com|travel-map-location-dot-wrong|2026년 10월 13일
-          worktoolnote.com|spreadsheet-number-stored-as-text-sum|2026년 10월 13일
-          lifetechnote.com|smartphone-camera-blurry-focus-check|2026년 10월 14일
-          homelifenote.com|bathroom-drain-odor-cause-check|2026년 10월 14일
-          travelreadynote.com|travel-card-payment-declined-check|2026년 10월 14일
-          worktoolnote.com|work-request-inbox-single-tracker|2026년 10월 14일
-          lifetechnote.com|phone-hotspot-connected-no-internet|2026년 10월 15일
-          homelifenote.com|clothes-shrank-after-wash-fabric-check|2026년 10월 15일
-          travelreadynote.com|travel-esim-no-data-on-arrival|2026년 10월 15일
-          worktoolnote.com|csv-leading-zero-code-preservation|2026년 10월 15일
-          SITES
+          python3 - <<'PY'
+          import datetime
+          import re
+          import time
+          import urllib.error
+          import urllib.request
+          from zoneinfo import ZoneInfo
+
+          sites = [
+              ("lifetechnote.com", "phone-downloaded-file-not-found"),
+              ("homelifenote.com", "behind-furniture-wall-damp-condensation-leak"),
+              ("travelreadynote.com", "overseas-card-local-currency-vs-krw-dcc"),
+              ("worktoolnote.com", "pdf-search-not-working-scanned-image-text"),
+          ]
+          published = datetime.date(2026, 10, 21)
+          today = datetime.datetime.now(ZoneInfo("Asia/Seoul")).date()
+          card_window = (today - published).days <= 2
+          date_string = "2026년 10월 21일"
+
+          def fetch(url):
+              failure = None
+              for attempt in range(6):
+                  try:
+                      req = urllib.request.Request(url, headers={"User-Agent": "BlogFleet-LiveSmoke/1.0"})
+                      with urllib.request.urlopen(req, timeout=30) as resp:
+                          if resp.status != 200:
+                              raise RuntimeError(f"HTTP {resp.status}")
+                          return resp.read().decode("utf-8")
+                  except Exception as exc:
+                      failure = exc
+                      if attempt < 5:
+                          time.sleep(5)
+              raise RuntimeError(f"{url}: {failure}")
+
+          def require(condition, message):
+              if not condition:
+                  raise RuntimeError(message)
+
+          for host, slug in sites:
+              base = "https://" + host
+              image_path = "/images/" + slug + ".svg"
+              print(f"Checking {host}/{slug}", flush=True)
+              article = fetch(base + "/blog/" + slug + "/")
+              cover = fetch(base + image_path)
+              home = fetch(base + "/")
+              archive = fetch(base + "/articles/")
+              require(image_path in article, host + ": article cover path missing")
+              require("<svg" in cover and 'width="1200"' in cover and 'height="675"' in cover,
+                      host + ": SVG content or dimensions missing")
+              require(date_string in article, host + ": KST publication date missing")
+              require(re.search(r"/images/[a-z0-9-]+[.]svg", home),
+                      host + ": homepage has no SVG cover card")
+              require(re.search(r"/images/[a-z0-9-]+[.]svg", archive),
+                      host + ": archive has no SVG cover card")
+              if card_window:
+                  require(image_path in home, host + ": new article not shown on home card")
+                  require(image_path in archive, host + ": new article not shown on archive card")
+              print(f"PASS {host}: article, SVG, KST date, home/archive cards", flush=True)
+          PY
