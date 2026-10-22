@@ -24,7 +24,8 @@
 6. 각 저장소의 **최종 커밋 기준 GitHub Pages build와 deploy 성공**을 확인한다.
 7. 배포 후 새 글의 실제 URL, 대표 SVG URL, 메인/글 목록의 대표이미지 카드 표시를 확인한다.
 8. build·deploy 또는 라이브 검증 중 하나라도 실패하면 성공했다고 보고하지 않는다. 원인을 고친 새 커밋으로 다시 배포한다.
-9. 이미 성공한 build job을 같은 workflow run에서 재실행해 Pages artifact를 중복 생성하지 않는다.
+9. `auto-seo-blog`의 라이브 검증 워크플로(`.github/workflows/live-smoke-published-20261012.yml`)가 이번 4개 새 글의 slug와 한국시간 발행일을 가리키도록 마지막에 갱신한다. 이전 발행분을 검증한 결과로 이번 발행을 성공 처리하지 않는다.
+10. 이미 성공한 build job을 같은 workflow run에서 재실행해 Pages artifact를 중복 생성하지 않는다.
 
 전체 커밋 히스토리나 모든 기존 본문을 매번 읽지 않는다. 메타데이터로 후보를 좁힌 뒤 필요한 글만 연다.
 
