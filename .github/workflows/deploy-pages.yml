@@ -3,6 +3,11 @@ name: Deploy Astro site to Pages
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'public/images/**'
+      - 'BLOG_FLEET.md'
+      - 'EDITORIAL_GUIDE.md'
+      - '.github/workflows/live-smoke-published-20261012.yml'
   workflow_dispatch:
   schedule:
     - cron: '30 1,13 * * *'
@@ -13,7 +18,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
+  group: pages-v2
   cancel-in-progress: true
 
 jobs:
