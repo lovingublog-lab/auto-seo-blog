@@ -27,19 +27,19 @@ jobs:
           from zoneinfo import ZoneInfo
 
           sites = [
-              ("lifetechnote.com", "phone-downloaded-file-not-found"),
-              ("homelifenote.com", "behind-furniture-wall-damp-condensation-leak"),
-              ("travelreadynote.com", "overseas-card-local-currency-vs-krw-dcc"),
-              ("worktoolnote.com", "pdf-search-not-working-scanned-image-text"),
+              ("lifetechnote.com", "phone-file-sharing-failed-check"),
+              ("homelifenote.com", "food-container-lid-dry-before-stacking"),
+              ("travelreadynote.com", "airport-boarding-gate-change-verify"),
+              ("worktoolnote.com", "spreadsheet-copy-formula-reference-shift"),
           ]
-          published = datetime.date(2026, 10, 21)
+          published = datetime.date(2026, 10, 22)
           today = datetime.datetime.now(ZoneInfo("Asia/Seoul")).date()
           card_window = (today - published).days <= 2
-          date_string = "2026년 10월 21일"
+          date_string = "2026년 10월 22일"
 
           def fetch(url):
               failure = None
-              for attempt in range(6):
+              for attempt in range(30):
                   try:
                       req = urllib.request.Request(url, headers={"User-Agent": "BlogFleet-LiveSmoke/1.0"})
                       with urllib.request.urlopen(req, timeout=30) as resp:
@@ -48,8 +48,8 @@ jobs:
                           return resp.read().decode("utf-8")
                   except Exception as exc:
                       failure = exc
-                      if attempt < 5:
-                          time.sleep(5)
+                      if attempt < 29:
+                          time.sleep(10)
               raise RuntimeError(f"{url}: {failure}")
 
           def require(condition, message):
