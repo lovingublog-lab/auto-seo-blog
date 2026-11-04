@@ -75,5 +75,9 @@ jobs:
               if card_window:
                   require(image_path in home, host + ": new article not shown on home card")
                   require(image_path in archive, host + ": new article not shown on archive card")
+                  require("/blog/" + slug + "/" in home, host + ": new article home link missing")
+                  require("/blog/" + slug + "/" in archive, host + ": new article archive link missing")
+                  require(date_string in home, host + ": new KST date missing from home")
+                  require(date_string in archive, host + ": new KST date missing from archive")
               print(f"PASS {host}: article, SVG, KST date, home/archive cards", flush=True)
           PY
