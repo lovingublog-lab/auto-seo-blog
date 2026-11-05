@@ -34,7 +34,7 @@ jobs:
           ]
           published = datetime.date(2026, 11, 6)
           today = datetime.datetime.now(ZoneInfo("Asia/Seoul")).date()
-          card_window = (today - published).days <= 2
+          card_window = 0 <= (today - published).days <= 2
           date_string = "2026년 11월 6일"
 
           def fetch(url):
