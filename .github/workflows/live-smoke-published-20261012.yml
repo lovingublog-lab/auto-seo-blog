@@ -27,15 +27,15 @@ jobs:
           from zoneinfo import ZoneInfo
 
           sites = [
-              ("lifetechnote.com", "mobile-resident-id-ic-vs-qr-first-issue"),
-              ("homelifenote.com", "moving-in-address-change-report-online-vs-visit"),
-              ("travelreadynote.com", "foreign-metro-platform-direction-before-boarding"),
-              ("worktoolnote.com", "spreadsheet-blank-vs-zero-data-entry-rules"),
+              ("lifetechnote.com", "joint-certificate-renewal-vs-reissue-expiry"),
+              ("homelifenote.com", "moving-day-electricity-meter-settlement"),
+              ("travelreadynote.com", "flight-ticket-checked-baggage-included-check"),
+              ("worktoolnote.com", "spreadsheet-handover-column-dictionary-source-date"),
           ]
-          published = datetime.date(2026, 11, 8)
+          published = datetime.date(2026, 11, 9)
           today = datetime.datetime.now(ZoneInfo("Asia/Seoul")).date()
           card_window = 0 <= (today - published).days <= 2
-          date_string = "2026년 11월 8일"
+          date_string = "2026년 11월 9일"
 
           def fetch(url):
               failure = None
