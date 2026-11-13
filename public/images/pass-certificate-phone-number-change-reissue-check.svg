@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675">
+<defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#e2f3ed"/><stop offset="1" stop-color="#aacbc7"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-opacity=".23"/></filter></defs>
+<rect width="1200" height="675" fill="url(#g)"/><path d="M0 500L1200 414v261H0Z" fill="#8fb2a9"/><path d="M0 522L1200 435" stroke="#f1f8f1" stroke-width="13"/>
+<path d="M65 55h460v290H65Z" fill="#679a9b" stroke="#edf8f2" stroke-width="14"/><path d="M85 81h420v241H85Z" fill="#c9e4d8"/><path d="M89 280l117-113 90 61 125-101 82 70v123H89Z" fill="#81b3a5"/>
+<path d="M40 392l740-62 370 138-772 117Z" fill="#b4866d" filter="url(#s)"/><path d="M378 585l772-117v56L378 641Z" fill="#8f6757"/>
+<ellipse cx="866" cy="252" rx="64" ry="72" fill="#d49a76"/><path d="M804 243q-10-102 68-107 86 1 55 102l-29-30-66 25Z" fill="#42565e"/><path d="M788 347q89-82 178 4l61 107-276 39Z" fill="#5b8c88"/><path d="M796 370l-118 43 24 41 121-34M973 378l-115 74-21-32 88-75" fill="#d49a76"/>
+<g transform="translate(146 366) rotate(-12)"><rect width="222" height="164" rx="15" fill="#faf7e9" filter="url(#s)"/><path d="M48 27h117l24 25v73H48Z" fill="#d5c1a2"/><path d="M71 49h58v47H71Z" fill="#ede1c5"/><path d="M25 140h165" stroke="#a8bcb2" stroke-width="9"/></g>
+<g transform="translate(420 317) rotate(11)"><rect width="173" height="285" rx="26" fill="#253f4f" filter="url(#s)"/><rect x="13" y="17" width="147" height="249" rx="14" fill="#f7fffb"/><path d="M33 61h105M33 89h75" stroke="#b5cdc7" stroke-width="12"/><rect x="32" y="119" width="110" height="89" rx="13" fill="#64aaa1"/><path d="M59 164l23 24 37-47" stroke="#fff" stroke-width="14" fill="none"/><circle cx="87" cy="244" r="9" fill="#a5c5b9"/></g>
+<path d="M317 630q30-79 110-105l29 41q-64 24-65 90Z" fill="#d19b7b"/>
+<g transform="translate(667 445) rotate(-8)"><rect width="231" height="161" rx="10" fill="#fff9e9" filter="url(#s)"/><path d="M25 35h180M25 63h141M25 91h159" stroke="#a3b9af" stroke-width="9"/><rect x="138" y="113" width="66" height="31" rx="8" fill="#5e988f"/></g></svg>
